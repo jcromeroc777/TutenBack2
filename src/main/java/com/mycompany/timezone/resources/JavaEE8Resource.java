@@ -15,19 +15,22 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 /**
  *
- * @author 
+ * @author Romero
  */
 @Path("timezone")
+@CrossOrigin(origins = "*")
 public class JavaEE8Resource {
     
     @POST
     @Path("/obtain")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Map<String, Object> createUser(JsonObject  requestBody) {
+    public Response createUser(JsonObject  requestBody) {
         String dato1 = requestBody.getString("dato1");
         String dato2 = requestBody.getString("dato2");
         
@@ -50,6 +53,11 @@ public class JavaEE8Resource {
 
         response.put("response", calculate);
 
-        return response;
+        return Response.ok() //200
+                                    .entity(response)
+                                    .header("Access-Control-Allow-Origin", "*")
+                                    .header("Access-Control-Allow-Headers", "*")
+                                    .header("Access-Control-Allow-Methods", "*")
+                                    .allow("OPTIONS").build();
     }
 }
